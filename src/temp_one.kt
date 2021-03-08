@@ -56,7 +56,7 @@ class Player(cardNumber: Int) : HandPoker(cardNumber) {
     //玩家出牌
     fun playerOutOfCard() {
         print("选择一张要出的牌:")
-        var choices: Int = input.nextInt()
+        val choices: Int = input.nextInt()
         card = this.handPoker.removeAt(choices - 1)
     }
 
