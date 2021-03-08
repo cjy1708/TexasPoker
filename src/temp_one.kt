@@ -74,11 +74,6 @@ fun main() {
     val player = Player(cardNumber)
     val computer = Player(cardNumber)
 
-//    if (playOne.myGetValue(playOne.handPoker) > playTwe.myGetValue(playTwe.handPoker)){
-//        print("${playOne.handPoker} > ${playTwe.handPoker}")
-//    }else{
-//        print("${playOne.handPoker} < ${playTwe.handPoker}")
-//    }
     //主运行
     for (i in 1..cardNumber) {
         player.display()
