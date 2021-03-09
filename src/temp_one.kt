@@ -16,6 +16,7 @@ open class Poker {
             }
     }
 
+    //与标准库对比得出数值位置
     fun myGetValue(contrast: String): Int {
         var myTarget = 0
         for ((i, num) in standard.withIndex()) {
@@ -29,7 +30,7 @@ open class Poker {
 }
 
 //手牌类
-open class HandPoker(private val cardNumber: Int) : Poker() {
+open class HandPoker(cardNumber: Int) : Poker() {
     val handPoker = mutableListOf<String>()
 
     init {
@@ -55,8 +56,18 @@ class Player(cardNumber: Int) : HandPoker(cardNumber) {
 
     //玩家出牌
     fun playerOutOfCard() {
-        print("选择一张要出的牌:")
-        val choices: Int = input.nextInt()
+        var choices = 0
+        var goNext = 'n'
+
+        print("选择一张要出的牌（1~${this.handPoker.size}）:")
+        while (goNext == 'n') {
+            choices = input.nextInt()
+            if (choices <= this.handPoker.size && choices >= 1) {
+                goNext = 'y'
+            }else{
+                print("不按要求不给过！\n又给你一次机会：")
+            }
+        }
         card = this.handPoker.removeAt(choices - 1)
     }
 
@@ -64,13 +75,25 @@ class Player(cardNumber: Int) : HandPoker(cardNumber) {
     fun computerOutOfCard() {
         card = this.handPoker.removeAt(Random.nextInt(this.handPoker.size))
     }
+
+    //类似strcmp的比较函数，大于返回1，小于返回0
+    fun pokerCmp(moreGoal: Player) {
+        if (this.myGetValue(this.card) > moreGoal.myGetValue(moreGoal.card)) {
+            println("${this.card}  ${moreGoal.card}")
+            println("${this.card} > ${moreGoal.card}")
+            this.score += 1
+        } else {
+            println("${this.card}  ${moreGoal.card}")
+            println("${this.card} < ${moreGoal.card}")
+            moreGoal.score += 1
+        }
+    }
 }
 
 fun main() {
     val input = Scanner(System.`in`)
     print("请输入每个人的手牌数：")
     val cardNumber: Int = input.nextInt()
-    val gameRule = Poker()
     val player = Player(cardNumber)
     val computer = Player(cardNumber)
 
@@ -79,15 +102,7 @@ fun main() {
         player.display()
         player.playerOutOfCard()
         computer.computerOutOfCard()
-        if (gameRule.myGetValue(player.card) > gameRule.myGetValue(computer.card)){
-            println("${player.card}  ${computer.card}")
-            println("${player.card} > ${computer.card}")
-            player.score += 1
-        }else{
-            println("${player.card}  ${computer.card}")
-            println("${player.card} < ${computer.card}")
-            computer.score += 1
-        }
+        player.pokerCmp(computer)
     }
     println("\n游戏结束\n比分为：${player.score}  ${computer.score}")
 }
